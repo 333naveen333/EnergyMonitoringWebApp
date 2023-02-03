@@ -803,6 +803,39 @@ public class JsonMessageController {
                     deviceData1Repository.save(deviceData1);
                 }
             }
+           else if(((oldDeviceData.getTimestamp().getYear()==deviceDataDto.getTimestamp().getYear())&&
+            (oldDeviceData.getTimestamp().getMonth()==deviceDataDto.getTimestamp().getMonth()) &&
+                    (oldDeviceData.getTimestamp().getDayOfMonth()!=deviceDataDto.getTimestamp().getDayOfMonth()))
+                    
+                    ||
+                   ( ((oldDeviceData.getTimestamp().getYear()==deviceDataDto.getTimestamp().getYear())&&
+                            (oldDeviceData.getTimestamp().getMonth()==deviceDataDto.getTimestamp().getMonth()) &&
+                            (oldDeviceData.getTimestamp().getDayOfMonth()==deviceDataDto.getTimestamp().getDayOfMonth())&&
+                            (oldDeviceData.getTimestamp().getHour()!=deviceDataDto.getTimestamp().getHour())))){
+                   
+                DeviceData1 deviceData1 = new DeviceData1();
+                deviceData1.setUser(user);
+                deviceData1.setDeviceId(deviceDataDto.getDeviceId());
+                deviceData1.setTimestamp(LocalDateTime.now());
+                deviceData1.setEventValue(deviceDataDto.getEventValue());
+                deviceData1.setApplianceName(deviceDataDto.getApplianceName());
+                deviceData1.setConsumption((deviceDataDto.getEventValue() * totalMinutes)/1000);
+                deviceData1.setPrice(deviceData1.getConsumption()*2);
+                deviceData1.setCo2Emission(deviceData1.getConsumption()*0.8);
+                deviceData1.setPricePerUnit(2);
+                deviceData1.setCo2EmissionPerUnit(0.8);
+                deviceData1.setTimeInMinutes(deviceDataDto.getTimeInMinutes());
+                deviceData1.setTotalTimeInMinutes(totalMinutes);
+                deviceData1.setTimeWhenAppisOn(deviceDataDto.getTimeWhenAppisOn());
+                deviceData1.setHour(deviceDataDto.getTimeWhenAppisOn().getHour());
+                deviceData1.setDayOfMonth(deviceDataDto.getTimeWhenAppisOn().getDayOfMonth());
+                deviceData1.setMonthOfYear(deviceDataDto.getTimeWhenAppisOn().getMonthValue());
+                deviceData1.setYear(deviceDataDto.getTimeWhenAppisOn().getYear());
+                deviceData1.setDayOfWeek(deviceDataDto.getTimeWhenAppisOn().getDayOfWeek());
+                deviceData1.setMonth(deviceDataDto.getTimeWhenAppisOn().getMonth());
+                deviceData1Repository.save(deviceData1);            	            	
+            }
+            
             else if (deviceDataDto.getTimestamp().getYear() == deviceDataDto.getTimeWhenAppisOn().getYear() &&
                     deviceDataDto.getTimestamp().getMonth() == deviceDataDto.getTimeWhenAppisOn().getMonth() &&
                     deviceDataDto.getTimestamp().getDayOfMonth() == deviceDataDto.getTimeWhenAppisOn().getDayOfMonth() &&
